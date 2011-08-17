@@ -1,0 +1,122 @@
+
+#shoutbox-body {
+  margin: 0px;
+  padding: 0px;
+}
+
+#shoutbox-add-form {
+  margin: 0;
+}
+
+.shoutbox-add-form .form-item {
+  margin: 0;
+  display: inline;
+}
+
+.shoutbox-view-form .form-submit {
+  visibility: hidden;
+  display:none;
+}
+
+#shoutbox-error {
+  display: none;
+  cursor: pointer;
+  width: 99%;
+  margin-bottom: 5px;
+}
+
+div#shoutbox-posts {
+  text-align: left;
+}
+
+div.shoutbox-msg {
+  padding: 4px;
+}
+
+span.shoutbox-user-name, span.shoutbox-user-name a, span.shoutbox-user-name a:visited {
+	font-weight: bold;
+	color: #27609B;
+}
+
+span.shoutbox-current-user-name, span.shoutbox-current-user-name a, span.shoutbox-current-user-name a:visited {
+	color: darkRed;
+}
+
+span.shoutbox-anonymous-user {
+	color: #C0C000;
+}
+
+div.shoutbox-msg p {
+	display: inline;
+	margin: 0;
+}
+
+div.shoutbox-archive a, div.shoutbox-archive a:visited {
+  text-align: center;
+  color: #fff;
+  background-color: #999;
+  display: block;
+}
+
+div.shoutbox-archive a:hover {
+  color: #fff;
+  background-color: #aaa;
+  text-decoration: none;
+}
+
+span.shoutbox-msg-time {
+	color: #999;
+	font-style: italic;
+	font-size: 80%;
+	padding-left: 7px;
+}
+
+.shoutbox-addinput {
+  width: 100%;
+}
+
+.shoutbox-imglink {
+  padding: 0px 2px 0px 2px;
+  float: right;
+}
+
+.shoutbox-queue-title {
+  font-weight: bold;
+  color: #FFFFFF;
+  background-color: #999;
+  text-align: center;
+}
+
+.shoutbox-add-form input#edit-message {
+  width: 99%;
+  height: 22px;
+}
+
+.shoutbox-unpublished {
+  background-color: #f00;
+}
+
+.shoutbox-interval-msg { 
+	float:left; 
+	font-size: 85%; 
+	color: #555; 
+}
+
+#shoutbox-throbber {
+  width: 16px;
+  height: 16px;
+  margin: 7px 12px 0 0;
+  background: transparent url(images/throbber.gif) no-repeat;
+  float: right;
+  display: none;
+}
+
+.shoutbox-admin-links {
+  display: none;
+}
+
+#shoutbox-add-form .form-submit { 
+  font-size: 120%; 
+  float: right;
+  margin: 2px 2px 0 0;
+}

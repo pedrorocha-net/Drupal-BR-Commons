@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * Implementation of hook_schema
+ */
+function shoutbox_group_schema() {
+  $schema['shoutbox_groups'] = array(
+    'description' => 'Link shouts to their respected group.',
+    'fields' => array(
+      'shout_id' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'The shout id',
+      ),
+      'nid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'The organic group node id',
+      ),
+    ),
+    'primary key' => array('shout_id'),
+  ); 
+  
+  return $schema;            
+}
+
+/**
+ * Implementation of hook_install
+ */
+function shoutbox_group_install() {
+  drupal_install_schema('shoutbox_group');
+}
+
+/**
+ * Implementation of hook_uninstall
+ */
+function shoutbox_group_uninstall() {
+  drupal_uninstall_schema('shoutbox_group');
+}
+
+/**
+ * Accomodate shoutbox schema changes
+ */
+function shoutbox_group_update_6200() {
+  db_query("UPDATE {shoutbox} s INNER JOIN {shoutbox_groups} sg ON s.shout_id = sg.shout_id SET s.module = 'shoutbox_group'");
+
+  return array();
+}

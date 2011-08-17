@@ -1,0 +1,9 @@
+<?php
+
+/**
+ * Implementation of hook_uninstall()
+ */
+function shoutbox_points_uninstall() {
+  variable_del('shoutbox_points_delete_points');
+  variable_del('shoutbox_points_amount');
+}

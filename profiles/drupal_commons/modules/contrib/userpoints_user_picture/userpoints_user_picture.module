@@ -1,0 +1,97 @@
+<?php
+//$Id: userpoints_user_picture.module,v 1.1.2.3 2011/01/26 05:04:58 fred0 Exp $
+define('USERPOINTS_USER_PICTURE', 'userpoints_user_picture');
+define('USERPOINTS_USER_PICTURE_TID', 'userpoints_user_picture_tid');
+
+function userpoints_user_picture_perm() {
+  return array('userpoints user picture');
+}
+
+/*
+ * Function: Implementation of hook_userpoints
+ */
+function userpoints_user_picture_userpoints($op, $params = array()) {
+  switch ($op) {
+    case 'setting':
+      $group = 'userpoints_user_picture';
+      $form[$group] = array(
+        '#type'        => 'fieldset',
+        '#collapsible' => TRUE,
+        '#collapsed'   => TRUE,
+        '#title'       => t('!Points for adding a user picture', userpoints_translation()),
+      );
+      if (!variable_get('user_pictures', 0)) {
+        $form[$group]['#description'] = t('You must enable user pictures in <a href="!url">User Settings</a> for this to have any effect.', array('!url' => url('admin/user/settings')));
+      }
+      $form[$group][USERPOINTS_USER_PICTURE] = array(
+        '#type'          => 'textfield',
+        '#title'         => t('!Points for adding a user picture', userpoints_translation()),
+        '#default_value' => variable_get(USERPOINTS_USER_PICTURE, 0),
+        '#size'          => 5,
+        '#maxlength'     => 5,
+      );
+      
+      $form[$group][USERPOINTS_USER_PICTURE_TID] = array(
+      '#type'          => 'select',
+      '#title'         => t('Category'),
+      '#default_value' => variable_get(USERPOINTS_USER_PICTURE_TID, 0),
+      '#options'       => userpoints_get_categories(),
+      '#description'   => t('User Picture points will be assigned to this category. You can modify what categories are available by modifying the <a href="!url">Userpoints taxonomy</a>.', 
+        array('!url' => url('admin/content/taxonomy/'. variable_get(USERPOINTS_CATEGORY_DEFAULT_VID, '')))),
+    );
+    
+      return $form;
+  }
+}
+
+/*
+ * Implementation of hook_user().
+ */
+function userpoints_user_picture_user($op, &$edit, &$user, $category = NULL) {
+
+	// Check that user pictures are enabled
+	if (!variable_get('user_pictures', 0)){
+	 return;
+	}
+	
+	// Check user has access to earn points for user picture
+	if (!user_access('userpoints user picture')) {
+	 return;
+	}
+	
+	$params = array(
+	 'uid'         => $user->uid,
+	 'entity_id'   => $user->uid,
+	 'entity_type' => 'user',
+	 'tid'         => variable_get(USERPOINTS_USER_PICTURE_TID, 0),
+	);
+	
+	switch($op) {
+		case 'update':
+			if ((empty($user->picture)) && $file = file_save_upload('picture_upload')) {
+				 // Award the points
+				 $params['points'] = variable_get(USERPOINTS_USER_PICTURE, 0);
+				 $params['operation'] = 'User Picture Added';
+			}
+			elseif ((!empty($user->picture)) && !empty($edit['picture_delete'])) {
+				 // Subtract the points
+				 $params['points'] = -(variable_get(USERPOINTS_USER_PICTURE, 0));
+				 $params['operation'] = 'User Picture Deleted';
+			}
+			break;
+		
+		case 'insert':
+			// Register with Picture module integration
+			// You must allow anonymous users to earn user picture points for this to work
+			if (module_exists('reg_with_pic') && ($file = file_save_upload('picture_upload') || $file = file_save_upload('picture_upload_register'))) {
+				// Award the points
+				$params['uid'] = $user->uid;
+				$params['entity_id'] = $user->uid;
+				$params['points'] = variable_get(USERPOINTS_USER_PICTURE, 0);
+				$params['operation'] = 'User Picture Added';
+			}
+			break;
+			
+	}
+	userpoints_userpointsapi($params);
+}

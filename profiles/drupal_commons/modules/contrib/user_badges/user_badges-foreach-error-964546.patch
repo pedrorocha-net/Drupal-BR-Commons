@@ -1,0 +1,48 @@
+diff --git a/user_badges.module b/user_badges.module
+index e54b167..06f3c76 100644
+--- a/user_badges.module
++++ b/user_badges.module
+@@ -195,30 +195,27 @@ function user_badges_user($op, &$edit, &$account, $category = 'account') {
+       // Have we loaded this user before?
+       if (isset($badges[$account->uid])) {
+         $account->badges = $badges[$account->uid];
++        break;
+       }
++      
++      $account->badges = array();
+ 
+       if ($account->uid > 0) {
+         //Get all user badges for this user, regardless of whether we filter the ones we show.
+         $account->badges_all = user_badges_get_badges($account->uid, array('nolimit' => TRUE));
+ 
+         //Now make the array of badges we will show.
+-        if (variable_get('user_badges_showone', 0)) {
+-          //Figure out our limit to the number of badges
+-          if (variable_get('user_badges_showone', 0)) {
+-            $limit = variable_get('user_badges_showone', 1);
+-          }
+-          else {
+-            //Set to -1 for no limit
+-            $limit = -1;
+-          }
++        if ($limit = variable_get('user_badges_showone', 0)) {
+           //Loop through all potential badges and get the ones we can show
+-          foreach ($account->badges_all as $bid => $badge) {
+-            //Display the badge if there's no limit or if the badge is unhideable or if we are within our limit
+-            if ( $limit != 0 || $badge->unhideable == 1 ) {
+-              $account->badges[$bid] = $badge;
+-              //Count down our limit, unless the badge doesn't count towards it
+-              if (!$badge->doesnotcounttolimit) {
+-                $limit--;
++          if (is_array($account->badges_all)) {
++            foreach ($account->badges_all as $bid => $badge) {
++              //Display the badge if there's no limit or if the badge is unhideable or if we are within our limit
++              if ( $limit != 0 || $badge->unhideable == 1 ) {
++                $account->badges[$bid] = $badge;
++                //Count down our limit, unless the badge doesn't count towards it
++                if (!$badge->doesnotcounttolimit) {
++                  $limit--;
++                }
+               }
+             }
+           }

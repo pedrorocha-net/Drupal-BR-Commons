@@ -1,0 +1,12 @@
+name = Shoutbox
+description = This module enables you to display a shoutbox block and page.
+core = 6.x
+package = Shoutbox
+
+
+; Information added by drupal.org packaging script on 2011-04-12
+version = "6.x-2.6"
+core = "6.x"
+project = "shoutbox"
+datestamp = "1302641816"
+

@@ -1,0 +1,16 @@
+name = Context OG
+description = "Provides Organic Groups conditions and reactions for the Context module."
+package = "Context"
+core = "6.x"
+dependencies[] = og
+dependencies[] = views
+dependencies[] = og_views
+dependencies[] = ctools
+dependencies[] = context
+
+; Information added by drupal.org packaging script on 2010-08-30
+version = "6.x-3.0"
+core = "6.x"
+project = "context_og"
+datestamp = "1283194307"
+
